@@ -91,10 +91,23 @@ driver.quit()
 > `driver.get_cookies()`返回列表，其中包含的是完整的cookie信息！不光有name、value，还有domain等cookie其他维度的信息。所以如果想要把获取的cookie信息和requests模块配合使用的话，需要转换为name、value作为键值对的cookie字典
 
 ```python
-# 获取当前标签页的全部cookie信息
-print(driver.get_cookies())
-# 把cookie转化为字典
-cookies_dict = {cookie[‘name’]: cookie[‘value’] for cookie in driver.get_cookies()}
+# coding: utf8
+""" 
+@File: part_008.py
+@Author: Alice(From Chengdu.China)
+@HomePage: https://github.com/AliceEngineerPro
+@CreatedTime: 2022/12/9 20:20
+"""
+
+from selenium import webdriver
+
+webdriver.FirefoxOptions().binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
+executable_path = r'./driver/firefox_107_0_1_x86_64/win/geckodriver.exe'
+driver = webdriver.Firefox(executable_path=executable_path)
+driver.get(url='https://baidu.com')
+baidu_cookies = {data.get('name'): data.get('value') for data in driver.get_cookies()}
+print(baidu_cookies)
+driver.quit()
 ```
 
 ### 2. 删除cookie
@@ -112,16 +125,23 @@ driver.delete_all_cookies()
 > selenium可以让浏览器执行我们规定的js代码，运行下列代码查看运行效果
 
 ```python
-import time
+# coding: utf8
+""" 
+@File: part_009.py
+@Author: Alice(From Chengdu.China)
+@HomePage: https://github.com/AliceEngineerPro
+@CreatedTime: 2022/12/11 9:15
+"""
+
 from selenium import webdriver
+import time
 
-driver = webdriver.Chrome()
-driver.get("http://www.itcast.cn/")
-time.sleep(1)
-
-js = 'window.scrollTo(0,document.body.scrollHeight)' # js语句
-driver.execute_script(js) # 执行js的方法
-
+webdriver.FirefoxOptions().binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
+executable_path = r'./driver/firefox_107_0_1_x86_64/win/geckodriver.exe'
+driver = webdriver.Firefox(executable_path=executable_path)
+driver.get(url='https://qq.com')
+js = '''window.scrollTo(0,document.body.scrollHeight)'''
+driver.execute_script(script=js)
 time.sleep(5)
 driver.quit()
 ```
@@ -146,7 +166,7 @@ driver.quit()
 2. 隐式等待
 3. 显式等待
 
-### 2. 强制等待
+### 2. 强制等待（了解）
 
 - 其实就是`time.sleep()`
 - 缺点时不智能，设置的时间太短，元素还没有加载出来；设置的时间太长，则会浪费时间
@@ -171,7 +191,7 @@ driver.get('https://www.baidu.com')
 driver.find_element_by_xpath()
 ```
 
-### 4. 显式等待
+### 4. 显式等待（了解）
 
 每经过多少秒就查看一次等待条件是否达成，如果达成就停止等待，继续执行后续代码
 
